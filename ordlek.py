@@ -8,7 +8,7 @@ with open("SAOL_14_clean.txt", encoding="UTF-8") as f:
         saol.append(line.rstrip())
 
 def playLoop(saol):
-    letters = int(input("Hur många bokstäver? "))
+    letters = int(input("Hur många bokstäver? (3-20)"))
     words = [word for word in saol if len(word) == letters]
     guessed = []
     correct = ['_']*letters
@@ -46,8 +46,3 @@ def playLoop(saol):
             words = tempWords[:]
 
 playLoop(saol)
-"""
-import locale
-locale.setlocale(locale.LC_ALL, "sv_SE.UTF-8")
-l.sort(key=locale.strxfrm)
-"""

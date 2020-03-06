@@ -21,15 +21,29 @@ def wordsort(words):
             valDict[word[i]] += 1
 
     for i,(word,value) in enumerate(lst):
-        lst[i][1] += round(sum(((letterCount[n][word[n]]-len(lst)/2)/len(lst))**2 for n in range(letters))**0.5,2)
-    return sorted(lst, key=itemgetter(1))
+        lst[i][1] += round(sum(((letterCount[n][word[n]]-len(lst)/2)/len(lst))**2 for n in range(letters))**0.5,4)
+    return sorted(lst, key=itemgetter(1), reverse=False)
+
+def wordsort2(words):
+    lst = [[word,0] for word in words]
+    letterCount = [{x : 0 for x in alphabet} for _ in range(letters)]
+
+    # Count occurences of letters at every position
+    for word,value in lst:
+        for i,valDict in enumerate(letterCount):
+            valDict[word[i]] += 1
+
+    for i,(word,value) in enumerate(lst):
+        lst[i][1] += round(sum(letterCount[n][word[n]]/len(lst) for n in range(letters))/letters,4)
+    return sorted(lst, key=itemgetter(1),reverse=True)
 
 # letters = int(input("How many letters? "))
-letters = 4
+letters = 6
 words = [word for word in saol if len(word) == letters]
 
-
-answer = choice(words)
+# ostron giraff spraka skrapa skvalp ankare betala cigarr damask falang garage halare javars kabare lavart rabatt
+# answer = choice(words)
+answer = "legend"
 guessed = [set() for _ in range(letters)]
 correct = ['_']*letters
 print()
@@ -37,8 +51,9 @@ print(len(words))
 print(answer)
 
 while True:
-    print(correct)
+    print(" ".join(correct))
     print([wordsort(words)[n] for n in range(min(5,len(words)))])
+    print([wordsort2(words)[n] for n in range(min(5,len(words)))])
 
     # Get guess
     while True:
@@ -46,12 +61,9 @@ while True:
         if guess in words:
             words.remove(guess)
             break
-        elif len(guess) != letters:
-            print("Not a valid word, try again")
-            continue
         else:
-            print(f"Not a {letters} letter word, try again")
-            continue
+            print("Not a valid word, try again")
+            break
 
     if guess == answer:
         break
@@ -72,10 +84,3 @@ while True:
     print(len(words))
     if '_' not in correct:
         break
-
-
-"""
-import locale
-locale.setlocale(locale.LC_ALL, "sv_SE.UTF-8")
-l.sort(key=locale.strxfrm)
-"""
